@@ -118,10 +118,7 @@ export async function runStockAlertJob(
           holding.peak_profit_pct === null
             ? null
             : toNumber(holding.peak_profit_pct);
-        if (
-          previousPeak === null ||
-          evaluation.nextPeakProfitPct > previousPeak
-        ) {
+        if (evaluation.shouldUpdatePeakProfitPct) {
           if (dryRun) {
             logger.info(
               "stock-alert-job",

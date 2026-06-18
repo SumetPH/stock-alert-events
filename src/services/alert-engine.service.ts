@@ -54,6 +54,7 @@ export function evaluateHoldingAlert(input: {
 }): {
   profitPct: number;
   nextPeakProfitPct: number;
+  shouldUpdatePeakProfitPct: boolean;
   alerts: EvaluatedAlert[];
 } {
   const { holding, currentPrice } = input;
@@ -70,10 +71,12 @@ export function evaluateHoldingAlert(input: {
   }
 
   const profitPct = roundTo(((currentPrice - entryPrice) / entryPrice) * 100);
-  const nextPeakProfitPct =
-    storedPeakProfitPct === null
-      ? profitPct
-      : Math.max(storedPeakProfitPct, profitPct);
+  const shouldTrackPeakProfit =
+    takeProfitPct > 0 ? profitPct >= takeProfitPct : profitPct > 0;
+  const baselinePeakProfitPct = storedPeakProfitPct ?? 0;
+  const nextPeakProfitPct = shouldTrackPeakProfit
+    ? Math.max(baselinePeakProfitPct, profitPct)
+    : baselinePeakProfitPct;
 
   const candidateAlerts: Partial<Record<AlertType, EvaluatedAlert>> = {};
 
@@ -142,6 +145,9 @@ export function evaluateHoldingAlert(input: {
   return {
     profitPct,
     nextPeakProfitPct: roundTo(nextPeakProfitPct),
+    shouldUpdatePeakProfitPct:
+      shouldTrackPeakProfit &&
+      (storedPeakProfitPct === null || nextPeakProfitPct > storedPeakProfitPct),
     alerts: selectedAlert ? [selectedAlert] : [],
   };
 }
