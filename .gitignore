@@ -1,0 +1,6 @@
+.env
+.env.prod
+.env.production
+.DS_Store
+node_modules
+dist

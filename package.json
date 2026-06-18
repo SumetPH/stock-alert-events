@@ -1,0 +1,30 @@
+{
+  "name": "stock-alert-events",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend cron service for US stock sell-plan alerts via Telegram",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "run:once": "tsx src/index.ts run-once",
+    "run:dry": "tsx src/index.ts run-dry",
+    "test:telegram": "tsx src/index.ts test-telegram",
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
+    "dotenv": "^16.4.5",
+    "node-cron": "^4.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
